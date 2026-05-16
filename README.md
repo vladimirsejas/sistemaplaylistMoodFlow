@@ -8,3 +8,4 @@ O sistema trabalhará inicialmente com três categorias de humor. Relaxar para m
 A reprodução musical será realizada utilizando a biblioteca Spotipy e a Spotify Web API, permitindo controlar o Spotify Desktop, Spotify Web e dispositivos móveis através de playback real.
 O projeto possui arquitetura modular organizada em componentes específicos responsáveis pela biblioteca encadeada, filas FIFO, integração com Spotify, controle de reprodução e interface do usuário.
 O principal objetivo do MoodFlow é demonstrar como conceitos clássicos de Estrutura de Dados podem ser aplicados em sistemas modernos próximos de aplicações reais utilizadas atualmente.
+git status

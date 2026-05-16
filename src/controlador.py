@@ -3,6 +3,8 @@ from src.fila import Fila
 from src.youtube_api import buscar_musica, tocar_musica
 from src.musica import Musica
 
+HUMORES_VALIDOS = ["relaxar", "focar", "animar"]
+
 
 class Controlador:
 
@@ -24,19 +26,37 @@ class Controlador:
         for i, item in enumerate(resultados):
             print(f"  [{i}] {item['titulo']} - {item['artista']}")
 
-        escolha = int(input("\nEscolha o numero da musica: "))
+        try:
+            escolha = int(input("\nEscolha o numero da musica: "))
+            if escolha < 0 or escolha >= len(resultados):
+                print("Opcao invalida.")
+                return
+        except ValueError:
+            print("Entrada invalida.")
+            return
+
         item = resultados[escolha]
 
-        bpm = int(input("Informe o BPM da musica (ou 0 se nao souber): "))
+        # Usuário escolhe o humor diretamente — sem BPM
+        print("\nQual o clima dessa musica?")
+        print("  [1] Relaxar  (musicas calmas, suaves)")
+        print("  [2] Focar    (musicas moderadas, concentracao)")
+        print("  [3] Animar   (musicas agitadas, energia)")
+
+        opcao_humor = input("Escolha: ").strip()
+        mapa = {"1": "relaxar", "2": "focar", "3": "animar"}
+
+        humor = mapa.get(opcao_humor)
+        if humor is None:
+            print("Humor invalido. Musica nao adicionada.")
+            return
 
         musica = Musica(
             titulo=item['titulo'],
             artista=item['artista'],
             album="YouTube Music",
-            bpm=bpm,
+            humor=humor,
             duracao=item['duracao'],
-            spotify_uri="",
-            spotify_url="",
             video_id=item['video_id']
         )
 
@@ -54,11 +74,11 @@ class Controlador:
         atual = self.biblioteca.head
         while atual is not None:
             musica = atual.musica
-            if musica.bpm <= 90:
+            if musica.humor == "relaxar":
                 self.fila_relaxar.enqueue(musica)
-            elif musica.bpm <= 130:
+            elif musica.humor == "focar":
                 self.fila_focar.enqueue(musica)
-            else:
+            elif musica.humor == "animar":
                 self.fila_animar.enqueue(musica)
             atual = atual.proximo
 

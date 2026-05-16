@@ -7,7 +7,7 @@ class Musica:
         titulo,
         artista,
         album,
-        bpm,
+        humor,
         duracao,
         video_id,
         spotify_uri="",
@@ -21,7 +21,7 @@ class Musica:
         self.artista = artista
         self.album = album
 
-        self.bpm = bpm
+        self.humor = humor  # "relaxar", "focar" ou "animar"
         self.duracao = duracao
 
         self.video_id = video_id
@@ -34,7 +34,7 @@ class Musica:
         print(f"Titulo: {self.titulo}")
         print(f"Artista: {self.artista}")
         print(f"Album: {self.album}")
-        print(f"BPM: {self.bpm}")
+        print(f"Humor: {self.humor}")
         print(f"Duracao: {self.duracao}")
         print(f"Video ID: {self.video_id}")
 
@@ -43,5 +43,5 @@ class Musica:
         return (
             f"{self.titulo} - "
             f"{self.artista} "
-            f"({self.album})"
+            f"[{self.humor}]"
         )
