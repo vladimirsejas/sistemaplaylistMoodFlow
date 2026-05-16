@@ -9,8 +9,9 @@ class Musica:
         album,
         bpm,
         duracao,
-        spotify_uri,
-        spotify_url
+        video_id,
+        spotify_uri="",
+        spotify_url=""
     ):
 
         self.id = Musica.contador_id
@@ -23,19 +24,19 @@ class Musica:
         self.bpm = bpm
         self.duracao = duracao
 
+        self.video_id = video_id
         self.spotify_uri = spotify_uri
         self.spotify_url = spotify_url
 
     def exibir_dados(self):
 
         print(f"ID: {self.id}")
-        print(f"Título: {self.titulo}")
+        print(f"Titulo: {self.titulo}")
         print(f"Artista: {self.artista}")
-        print(f"Álbum: {self.album}")
+        print(f"Album: {self.album}")
         print(f"BPM: {self.bpm}")
-        print(f"Duração: {self.duracao}")
-        print(f"Spotify URI: {self.spotify_uri}")
-        print(f"Spotify URL: {self.spotify_url}")
+        print(f"Duracao: {self.duracao}")
+        print(f"Video ID: {self.video_id}")
 
     def __str__(self):
 
