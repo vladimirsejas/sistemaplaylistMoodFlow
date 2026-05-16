@@ -4,71 +4,64 @@ from src.controlador import Controlador
 class Interface:
 
     def __init__(self):
-
         self.controlador = Controlador()
 
     def exibir_menu(self):
-
         print("\n==============================")
-        print("   Mood Flow Music Player")
+        print("         MOOD FLOW")
         print("==============================")
-        print("1 - Buscar musica no YouTube Music")
-        print("2 - Ver biblioteca")
-        print("3 - Montar playlists por humor")
-        print("4 - Ver playlists")
-        print("5 - Tocar playlist Relaxar")
-        print("6 - Tocar playlist Focar")
-        print("7 - Tocar playlist Animar")
-        print("8 - Ver historico")
+        print("1 - Buscar uma musica")
+        print("2 - Buscar musicas de um artista")
+        print("3 - Ouvir musicas para relaxar")
+        print("4 - Ouvir musicas para focar")
+        print("5 - Ouvir musicas para animar")
+        print("6 - Gerar playlist aleatoria")
+        print("7 - Ver historico")
+        print("8 - Ver biblioteca")
+        print("9 - Parar musica")
         print("0 - Sair")
         print("==============================")
 
     def executar(self):
+        print("\nBem-vindo ao MoodFlow!")
+        print("O player que entende o seu humor.")
 
         while True:
-
             self.exibir_menu()
-
-            opcao = input("Escolha uma opcao: ")
+            opcao = input("O que voce quer ouvir? ")
 
             if opcao == "1":
-
-                query = input("\nDigite o nome da musica: ")
-                self.controlador.buscar_e_adicionar(query)
+                self.controlador.buscar_especifica()
 
             elif opcao == "2":
-
-                self.controlador.ver_biblioteca()
+                self.controlador.buscar_artista()
 
             elif opcao == "3":
-
-                self.controlador.montar_playlists()
+                self.controlador.gerar_playlist_humor("relaxar")
 
             elif opcao == "4":
-
-                self.controlador.ver_playlists()
+                self.controlador.gerar_playlist_humor("focar")
 
             elif opcao == "5":
-
-                self.controlador.reproduzir_proximo("relaxar")
+                self.controlador.gerar_playlist_humor("animar")
 
             elif opcao == "6":
-
-                self.controlador.reproduzir_proximo("focar")
+                self.controlador.playlist_aleatoria()
 
             elif opcao == "7":
-
-                self.controlador.reproduzir_proximo("animar")
-
-            elif opcao == "8":
-
                 self.controlador.ver_historico()
 
-            elif opcao == "0":
+            elif opcao == "8":
+                self.controlador.ver_biblioteca()
 
-                print("\nEncerrando sistema...")
+            elif opcao == "9":
+                self.controlador.parar()
+                print("Musica pausada.")
+
+            elif opcao == "0":
+                self.controlador.parar()
+                print("\nAte logo!")
                 break
 
             else:
-
                 print("\nOpcao invalida.")

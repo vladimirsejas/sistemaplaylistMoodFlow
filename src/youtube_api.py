@@ -7,6 +7,9 @@ import threading
 
 ytmusic = YTMusic()
 
+# Caminho do ffmpeg.exe na raiz do projeto
+FFMPEG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ffmpeg.exe")
+
 # Controle de reprodução
 _reproduzindo = False
 _thread_musica = None
@@ -23,13 +26,12 @@ def buscar_musica(query, limite=5):
             'duracao': item.get('duration', 'N/A')
         }
         musicas.append(musica)
-    return musicas
+    return musicas[:limite]  # garante que nunca passa do limite
 
 
 def tocar_musica(video_id):
     global _reproduzindo, _thread_musica
 
-    # Para música anterior se estiver tocando
     parar_musica()
 
     _reproduzindo = True
@@ -42,7 +44,6 @@ def _reproduzir(video_id):
 
     url = f"https://www.youtube.com/watch?v={video_id}"
 
-    # Cria arquivo temporário para o áudio
     with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
         caminho_audio = tmp.name
 
@@ -51,6 +52,7 @@ def _reproduzir(video_id):
         'outtmpl': caminho_audio,
         'quiet': True,
         'no_warnings': True,
+        'ffmpeg_location': FFMPEG_PATH,   # <-- aponta pro ffmpeg.exe do projeto
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -58,13 +60,12 @@ def _reproduzir(video_id):
         }],
     }
 
-    print("Carregando audio...")
+    print(f"Carregando audio... (ffmpeg: {FFMPEG_PATH})")
 
     try:
         with yt_dlp.YoutubeDL(opcoes_ydl) as ydl:
             ydl.download([url])
 
-        # O yt-dlp adiciona .mp3 ao nome
         if not os.path.exists(caminho_audio):
             caminho_audio = caminho_audio + ".mp3"
 
@@ -74,16 +75,17 @@ def _reproduzir(video_id):
 
         print("Tocando! (pressione Enter para voltar ao menu)")
 
-        # Aguarda até terminar ou ser parado
         while pygame.mixer.music.get_busy() and _reproduzindo:
             pygame.time.wait(500)
 
     except Exception as e:
         print(f"Erro ao reproduzir: {e}")
     finally:
-        pygame.mixer.music.stop()
-        pygame.mixer.quit()
-        # Remove arquivo temporário
+        try:
+            pygame.mixer.music.stop()
+            pygame.mixer.quit()
+        except Exception:
+            pass
         for ext in ["", ".mp3"]:
             try:
                 os.remove(caminho_audio.replace(".mp3", "") + ext)
